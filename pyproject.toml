@@ -1,0 +1,25 @@
+[build-system]
+requires = ["flit_core>=3.4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "align4d"
+version = "1.0.0"
+authors = [
+  { name="Peilin Wu", email="pwu54@emory.edu" },
+]
+description = "Test package for align4d"
+readme = "README.md"
+requires-python = "=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/emorynlp/align4d"
+"Bug Tracker" = "https://github.com/emorynlp/align4d/issues"
