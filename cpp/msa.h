@@ -14,7 +14,7 @@
 
 int edit_distance(const std::string &, const std::string &);
 
-int compare(const std::string &, const std::vector<std::string> &);
+int compare(const std::string &, const std::vector<std::string> &, int = 2);
 
 void get_sequence_position_list_aux(const std::vector<int> &, int, int, std::vector<std::vector<int>> &, std::vector<int> &);
 
@@ -28,6 +28,6 @@ std::vector<std::string> get_compare_parameter(const std::vector<int>&, const st
 
 size_t get_index(const std::vector<int>&, const std::vector<int>&);
 
-std::vector<std::vector<std::string>> multi_sequence_alignment(const std::vector<std::string>&, const std::vector<std::vector<std::string>>&);
+std::vector<std::vector<std::string>> multi_sequence_alignment(const std::vector<std::string>&, const std::vector<std::vector<std::string>>&, int = 2);
 
 #endif //MSA_MSA_H

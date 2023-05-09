@@ -22,7 +22,7 @@ void write_csv(const std::string& file_name, const std::vector<std::vector<std::
     file.close();
 }
 
-std::vector<std::string> get_token_match_result(const std::vector<std::vector<std::string>>& final_result) {
+std::vector<std::string> get_token_match_result(const std::vector<std::vector<std::string>>& final_result, int partial_bound) {
     /*
      * Get the match result (fully match, partially match, mismatch, gap) for each position of token after alignment
      * The rule of comparison must be the same as compare function in MSA
@@ -41,7 +41,7 @@ std::vector<std::string> get_token_match_result(const std::vector<std::vector<st
         if (compare_token.size() == 2) {
             if (compare_token[0] == compare_token[1]) {
                 token_match_result.emplace_back("fully match");
-            } else if (edit_distance(compare_token[0], compare_token[1]) < 2) {
+            } else if (edit_distance(compare_token[0], compare_token[1]) < partial_bound) {
                 token_match_result.emplace_back("partially match");
             } else {
                 token_match_result.emplace_back("mismatch");

@@ -7,9 +7,8 @@ the .pyd or .so file are the compiled objects in the build directory
 from distutils.core import Extension, setup
 import os
 
-
-# os.environ["CC"] = "g++-12" #  for mac os
-# os.environ["CXX"] = "g++-12" #  for mac os
+# os.environ["CC"] = "g++-12"  # for mac os
+# os.environ["CXX"] = "g++-12"  # for mac os
 
 module1 = Extension(
     "align4d",
@@ -20,7 +19,7 @@ module1 = Extension(
 
 setup(
     name="align4d",
-    version="1.0.0",
+    version="1.1.0",
     ext_modules=[
         module1,
     ],

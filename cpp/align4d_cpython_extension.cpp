@@ -123,8 +123,9 @@ static PyObject *align_without_segment(PyObject *self, PyObject *args) {
     PyObject *hypothesis_list;
     PyObject *reference_list;
     PyObject *reference_label_list;
+    int partial_bound = 2;
 
-    if (!PyArg_ParseTuple(args, "O!O!O!", &PyList_Type, &hypothesis_list, &PyList_Type, &reference_list, &PyList_Type, &reference_label_list)) {
+    if (!PyArg_ParseTuple(args, "O!O!O!|i", &PyList_Type, &hypothesis_list, &PyList_Type, &reference_list, &PyList_Type, &reference_label_list, &partial_bound)) {
         return NULL;
     }
 
@@ -132,7 +133,7 @@ static PyObject *align_without_segment(PyObject *self, PyObject *args) {
     std::vector<std::string> reference = string_list_to_vector(reference_list);
     std::vector<std::string> reference_label = string_list_to_vector(reference_label_list);
 
-    std::vector<std::vector<std::string>> align_result = align_without_segment(hypothesis, reference, reference_label);
+    std::vector<std::vector<std::string>> align_result = align_without_segment(hypothesis, reference, reference_label, partial_bound);
     PyObject *py_align_result = nested_str_vector_to_list(align_result);
     return Py_BuildValue("O", py_align_result);
 }
@@ -141,8 +142,9 @@ static PyObject *align_with_auto_segment(PyObject *self, PyObject *args) {
     PyObject *hypothesis_list;
     PyObject *reference_list;
     PyObject *reference_label_list;
+    int partial_bound = 2;
 
-    if (!PyArg_ParseTuple(args, "O!O!O!", &PyList_Type, &hypothesis_list, &PyList_Type, &reference_list, &PyList_Type, &reference_label_list)) {
+    if (!PyArg_ParseTuple(args, "O!O!O!|i", &PyList_Type, &hypothesis_list, &PyList_Type, &reference_list, &PyList_Type, &reference_label_list, &partial_bound)) {
         return NULL;
     }
 
@@ -150,7 +152,7 @@ static PyObject *align_with_auto_segment(PyObject *self, PyObject *args) {
     std::vector<std::string> reference = string_list_to_vector(reference_list);
     std::vector<std::string> reference_label = string_list_to_vector(reference_label_list);
 
-    std::vector<std::vector<std::string>> align_result = align_with_auto_segment(hypothesis, reference, reference_label);
+    std::vector<std::vector<std::string>> align_result = align_with_auto_segment(hypothesis, reference, reference_label, partial_bound);
     PyObject *py_align_result = nested_str_vector_to_list(align_result);
     return Py_BuildValue("O", py_align_result);
 }
@@ -161,8 +163,9 @@ static PyObject *align_with_manual_segment(PyObject *self, PyObject *args) {
     PyObject *reference_label_list;
     int segment_length = 0;
     int barrier_length = 0;
+    int partial_bound = 2;
 
-    if (!PyArg_ParseTuple(args, "O!O!O!ii", &PyList_Type, &hypothesis_list, &PyList_Type, &reference_list, &PyList_Type, &reference_label_list, &segment_length, &barrier_length)) {
+    if (!PyArg_ParseTuple(args, "O!O!O!ii|i", &PyList_Type, &hypothesis_list, &PyList_Type, &reference_list, &PyList_Type, &reference_label_list, &segment_length, &barrier_length, &partial_bound)) {
         return NULL;
     }
 
@@ -170,20 +173,21 @@ static PyObject *align_with_manual_segment(PyObject *self, PyObject *args) {
     std::vector<std::string> reference = string_list_to_vector(reference_list);
     std::vector<std::string> reference_label = string_list_to_vector(reference_label_list);
 
-    std::vector<std::vector<std::string>> align_result = align_with_manual_segment(hypothesis, reference, reference_label, segment_length, barrier_length);
+    std::vector<std::vector<std::string>> align_result = align_with_manual_segment(hypothesis, reference, reference_label, segment_length, barrier_length, partial_bound);
     PyObject *py_align_result = nested_str_vector_to_list(align_result);
     return Py_BuildValue("O", py_align_result);
 }
 
 static PyObject *get_token_match_result(PyObject *self, PyObject *args) {
     PyObject *py_align_result;
+    int partial_bound = 2;
 
-    if (!PyArg_ParseTuple(args, "O!", &PyList_Type, &py_align_result)) {
+    if (!PyArg_ParseTuple(args, "O!|i", &PyList_Type, &py_align_result, &partial_bound)) {
         return NULL;
     }
 
     std::vector<std::vector<std::string>> align_result = nested_str_list_to_vector(py_align_result);
-    std::vector<std::string> token_match_result = get_token_match_result(align_result);
+    std::vector<std::string> token_match_result = get_token_match_result(align_result, partial_bound);
     PyObject *py_token_match_result = string_vector_to_list(token_match_result);
     return Py_BuildValue("O", py_token_match_result);
 }

@@ -36,7 +36,7 @@ int edit_distance(const std::string &token1, const std::string &token2) {
     return matrix[token1.length()][token2.length()];
 }
 
-int compare(const std::string &hypothesis, const std::vector<std::string> &reference_list) {
+int compare(const std::string &hypothesis, const std::vector<std::string> &reference_list, int partial_bound) {
     /*
      * Give score for comparison between hypothesis token and reference tokens
      *
@@ -67,7 +67,7 @@ int compare(const std::string &hypothesis, const std::vector<std::string> &refer
     } else {
         if (hypothesis == reference) { // fully matched situation
             return FULLY_MATCH_SCORE;
-        } else if (edit_distance(hypothesis, reference) < 2) { // partially matched situation
+        } else if (edit_distance(hypothesis, reference) < partial_bound) { // partially matched situation
             return PARTIAL_MATCH_SCORE;
         } else { // mis-matched
             return MISMATCH_SCORE;
@@ -236,7 +236,7 @@ size_t get_index(const std::vector<int>& current_index, const std::vector<int>& 
     return index;
 }
 
-std::vector<std::vector<std::string>> multi_sequence_alignment(const std::vector<std::string>& hypothesis, const std::vector<std::vector<std::string>>& reference) {
+std::vector<std::vector<std::string>> multi_sequence_alignment(const std::vector<std::string>& hypothesis, const std::vector<std::vector<std::string>>& reference, int partial_bound) {
     /*
      * The actual function to do the multi-sequence alignment based on Needleman-Wunsch algorithm, a dynamic programming approach
      * This algorithm expands the original Needleman-Wunsch algorithm to multidimensional way
@@ -283,7 +283,7 @@ std::vector<std::vector<std::string>> multi_sequence_alignment(const std::vector
                 std::vector<std::string> compare_parameter = get_compare_parameter(current_index, parameter_index, speaker_sequence);
                 std::string hypo = compare_parameter[0];
                 std::vector<std::string> ref(compare_parameter.begin() + 1, compare_parameter.end());
-                parameter.emplace_back(score[get_index(parameter_index, matrix_size)] + compare(hypo, ref));
+                parameter.emplace_back(score[get_index(parameter_index, matrix_size)] + compare(hypo, ref, partial_bound));
             }
             score[get_index(current_index, matrix_size)] = *std::ranges::max_element(parameter);
             current_index[sequence_position.back()]++;
@@ -320,7 +320,7 @@ std::vector<std::vector<std::string>> multi_sequence_alignment(const std::vector
             std::vector<std::string> compare_parameter = get_compare_parameter(current_index, parameter_index, speaker_sequence);
             std::string hypo = compare_parameter[0];
             std::vector<std::string> ref(compare_parameter.begin() + 1, compare_parameter.end());
-            if (score[get_index(current_index, matrix_size)] == compare(hypo, ref) + score[get_index(parameter_index, matrix_size)]) {
+            if (score[get_index(current_index, matrix_size)] == compare(hypo, ref, partial_bound) + score[get_index(parameter_index, matrix_size)]) {
                 align_sequence[0].emplace_back(hypo);
                 for (int i = 1; i < align_sequence.size(); ++i) {
                     align_sequence[i].emplace_back(ref[i - 1]);

@@ -52,7 +52,7 @@ template <typename T> void write_csv_multiple_line(const std::string& file_name,
 
 void write_csv(const std::string&, const std::vector<std::vector<std::string>>&);
 
-std::vector<std::string> get_token_match_result(const std::vector<std::vector<std::string>>&);
+std::vector<std::string> get_token_match_result(const std::vector<std::vector<std::string>>&, int = 2);
 
 std::vector<std::vector<int>> get_align_indices(const std::vector<std::vector<std::string>>&);
 
