@@ -137,7 +137,7 @@ Sample output from `align()` :
 ```python
 # content in align_result
 {
-		"hypothesis": ['ok', 'I', 'am', 'a', 'fish.', 'Are', 'you?', 'Hello', 'there.', 'How', 'are', 'you?', 'ok'],
+    "hypothesis": ['ok', 'I', 'am', 'a', 'fish.', 'Are', 'you?', 'Hello', 'there.', 'How', 'are', 'you?', 'ok'],
     "reference": {
         "A": ['', 'I', 'am', 'a', 'fish.', '', '', '', '', '', '', '', ''],
         "B": ['okay.', '', '', '', '', '', '', '', '', '', '', '', ''],
@@ -198,7 +198,7 @@ reference = [
         ["E", "How are you? "]
 ]
 align_result = align.align(hypothesis, reference)
-align_indices = align4d.get_token_match_result(align_result)
+align_indices = align.get_token_match_result(align_result)
 print(align_indices)
 ```
 
