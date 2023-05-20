@@ -222,6 +222,4 @@ If you encounter any issues while using Align4d, try the following:
 1. Make sure you have installed Python version 3.10 or higher.
 2. Make sure you have installed the latest version of Align4d.
 3. Check the input data to make sure it is in the correct format.
-    1. The length of the `reference` and `reference_speaker_label` needs to be the same.
-    2. All the input strings must be encoded in the utf-8 format.
-4. For short conversation (hypothesis length ≤ 100), please use `align_without_segment()`.
+    1. All the input strings must be encoded in the utf-8 format.
