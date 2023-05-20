@@ -1,7 +1,3 @@
-//
-// Created by peili on 2023/2/3.
-//
-
 #ifndef MSA_ALIGN_H
 #define MSA_ALIGN_H
 

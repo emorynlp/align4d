@@ -207,15 +207,16 @@ The return value is a dictionary containing list of integers that shows the mapp
 ```python
 # possible output
 {
-		'A': [1, 2, 3, 4], 
-		'B': [0], 
-		'C': [5, 6], 
-		'D': [7, 8], 
-		'E': [9, 10, 11]
+    'A': [1, 2, 3, 4], 
+    'B': [0], 
+    'C': [5, 6], 
+    'D': [7, 8], 
+    'E': [9, 10, 11]
 }
 ```
 
 ## Troubleshooting
+This package currently only supports Windows 10/11 x86_64, Linux x86_64 (tested with Ubuntu 22.04), and macOS with ARM architecture (M-series processor). 
 
 If you encounter any issues while using Align4d, try the following:
 
