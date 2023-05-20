@@ -76,11 +76,15 @@ def get_token_match_result(output: dict, partial_bound: int = 2) -> list[str]:
     return align4d.get_token_match_result(align_result, partial_bound)
 
 
-def get_align_indices(output: dict) -> list[list[int]]:
+def get_align_indices(output: dict) -> dict:
     align_result = [output["hypothesis"]]
     for value in output["reference"].values():
         align_result.append(value)
     TRANS = str.maketrans('', '', string.punctuation)
     align_result = [[token.translate(TRANS) for token in row] for row in align_result]
     align_result = [[token if token != '' else '-' for token in row] for row in align_result]
-    return align4d.get_align_indices(align_result)
+    align_indices_list = align4d.get_align_indices(align_result)
+    align_indices = {}
+    for index, speaker_label in enumerate(output["reference"].keys()):
+        align_indices[speaker_label] = align_indices_list[index]
+    return align_indices

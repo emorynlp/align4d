@@ -4,11 +4,11 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "align4d"
-version = "1.1.0"
+version = "1.1.1"
 authors = [
   { name="Peilin Wu", email="pwu54@emory.edu" },
 ]
-description = "Test package for align4d"
+description = "align4d: Multi-sequence alignment tools for aligning ASR and Speaker Diarization result"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
