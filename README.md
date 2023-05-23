@@ -17,7 +17,7 @@ The **align4d** uses Levenshtein Distance as the measurement of the similarity b
 
 ## Installation
 
-To install **align4d**, you need to have Python version 3.10 or higher. Follow these steps:
+To install **align4d**, you need to have Python version 3.10 or 3.11. Follow these steps:
 
 1. Open your terminal or command prompt.
 2. Type in the following command: `pip install align4d`
@@ -216,11 +216,11 @@ The return value is a dictionary containing list of integers that shows the mapp
 ```
 
 ## Troubleshooting
-This package currently only supports Windows 10/11 x86_64, Linux x86_64 (tested with Ubuntu 22.04), and macOS with ARM architecture (M-series processor). 
+This package currently only supports Windows 10/11 x86_64, Linux x86_64 (tested with Ubuntu 22.04), and macOS (M-series processor or Intel processor). 
 
 If you encounter any issues while using Align4d, try the following:
 
-1. Make sure you have installed Python version 3.10 or higher.
+1. Make sure you have installed Python version 3.10 or 3.11.
 2. Make sure you have installed the latest version of Align4d.
 3. Check the input data to make sure it is in the correct format.
     1. All the input strings must be encoded in the utf-8 format.
