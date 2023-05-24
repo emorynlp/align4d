@@ -258,11 +258,11 @@ std::vector<std::vector<std::string>> multi_sequence_alignment(const std::vector
         matrix_size.emplace_back(speaker.size() + 1);
         total_cell *= speaker.size() + 1;
     }
-    std::cout << " matrix size: ";
-    for (auto size: matrix_size) {
-        std::cout << size << " ";
-    }
-    std::cout << " total cell: " << total_cell << " speaker num: " << reference.size();
+//    std::cout << " matrix size: ";
+//    for (auto size: matrix_size) {
+//        std::cout << size << " ";
+//    }
+//    std::cout << " total cell: " << total_cell << " speaker num: " << reference.size();
     std::vector<int16_t> score(total_cell);
 //    auto score = std::make_unique<int[]>(total_cell);
 //    std::fill(&score[0], &score[total_cell - 1], 0);
@@ -300,7 +300,7 @@ std::vector<std::vector<std::string>> multi_sequence_alignment(const std::vector
         new_sequence_position:;
     }
 
-    std::cout << " cell max score: " << *std::ranges::max_element(score);
+//    std::cout << " cell max score: " << *std::ranges::max_element(score);
 
     // backtracking
     std::vector<std::vector<std::string>> align_sequence(speaker_sequence.size());

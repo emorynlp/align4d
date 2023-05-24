@@ -192,12 +192,12 @@ std::tuple<int, int> get_optimal_segment_parameter(const std::vector<std::string
                 ref_max = ref_index_diff;
             }
         }
-        std::cout << "segment length: " << i << " max hypothesis length: " << hypo_max << " max reference length: " << ref_max << std::endl;
+//        std::cout << "segment length: " << i << " max hypothesis length: " << hypo_max << " max reference length: " << ref_max << std::endl;
         if (hypo_max + ref_max <= hypo_ref_min_sum) {
             optimal_length = i;
             hypo_ref_min_sum = hypo_max + ref_max;
         }
     }
-    std::cout << "optimal length: " << optimal_length << " optimal barrier length: " << barrier_length << std::endl;
+//    std::cout << "optimal length: " << optimal_length << " optimal barrier length: " << barrier_length << std::endl;
     return std::make_tuple(optimal_length, barrier_length);
 }

@@ -1,9 +1,15 @@
 import copy
 import string
+import os
+import shutil
+import subprocess
+import glob
+import sys
+
 from align4d import align4d
 
 
-def align(hypothesis: str | list[str], reference: list[list[str]], partial_bound: int = 2, segment_length: int = None,
+def align(hypothesis: str | list[str], reference: list[list], partial_bound: int = 2, segment_length: int = None,
           barrier_length: int = None, strip_punctuation: bool = True) -> dict:
     # pre-processing
     if type(hypothesis) == str:
@@ -14,11 +20,19 @@ def align(hypothesis: str | list[str], reference: list[list[str]], partial_bound
     reference_label = []
     for utterance in reference:
         if len(utterance) == 1:
-            reference_temp.extend(utterance[0].split())
-            reference_label.extend(["A"] * len(utterance[0].split()))
+            if type(utterance[0]) == str:
+                reference_temp.extend(utterance[0].split())
+                reference_label.extend(["A"] * len(utterance[0].split()))
+            elif type(utterance[0]) == list:
+                reference_temp.extend(utterance[0])
+                reference_label.extend(["A"] * len(utterance[0]))
         elif len(utterance) == 2:
-            reference_temp.extend(utterance[1].split())
-            reference_label.extend([utterance[0]] * len(utterance[1].split()))
+            if type(utterance[1]) == str:
+                reference_temp.extend(utterance[1].split())
+                reference_label.extend([utterance[0]] * len(utterance[1].split()))
+            elif type(utterance[1]) == list:
+                reference_temp.extend(utterance[1])
+                reference_label.extend([utterance[0]] * len(utterance[1]))
     if strip_punctuation:
         TRANS = str.maketrans('', '', string.punctuation)
         hypothesis_strip = [s.translate(TRANS) for s in hypothesis_temp]
@@ -66,7 +80,7 @@ def align(hypothesis: str | list[str], reference: list[list[str]], partial_bound
     return output
 
 
-def get_token_match_result(output: dict, partial_bound: int = 2) -> list[str]:
+def token_match(output: dict, partial_bound: int = 2) -> list[str]:
     align_result = [output["hypothesis"]]
     for value in output["reference"].values():
         align_result.append(value)
@@ -76,7 +90,7 @@ def get_token_match_result(output: dict, partial_bound: int = 2) -> list[str]:
     return align4d.get_token_match_result(align_result, partial_bound)
 
 
-def get_align_indices(output: dict) -> dict:
+def align_indices(output: dict) -> dict:
     align_result = [output["hypothesis"]]
     for value in output["reference"].values():
         align_result.append(value)
@@ -88,3 +102,50 @@ def get_align_indices(output: dict) -> dict:
     for index, speaker_label in enumerate(output["reference"].keys()):
         align_indices[speaker_label] = align_indices_list[index]
     return align_indices
+
+
+def compile():
+    # Get the current script's directory
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+
+    # Path to 'cpp' directory
+    cpp_dir = os.path.join(script_dir, 'cpp')
+
+    # Path to 'build' directory
+    build_dir = os.path.join(cpp_dir, 'build')
+
+    # Check if 'build' directory exists, remove it if it does
+    if os.path.exists(build_dir):
+        shutil.rmtree(build_dir)
+
+    # Check for files with extension '.so', '.pyd', or '.dll' in 'cpp' directory and remove them
+    for ext in ['*.so', '*.pyd', '*.dll']:
+        for f in glob.glob(os.path.join(script_dir, ext)):
+            os.chmod(f, 0o777)
+            os.remove(f)
+
+    # Change to 'cpp' directory
+    os.chdir(cpp_dir)
+
+    # Run 'setup.py build' command
+    subprocess.check_call([sys.executable, 'setup.py', 'build'])
+
+    # Find directory that contains 'lib' in its name
+    lib_dir = next((os.path.join(build_dir, d) for d in os.listdir(build_dir) if 'lib' in d), None)
+    if lib_dir is None:
+        raise FileNotFoundError('No directory containing "lib" was found in the build directory.')
+
+    # Find file with extension '.so', '.pyd', or '.dll'
+    file_path = next(
+        (os.path.join(lib_dir, f) for ext in ['*.so', '*.pyd', '*.dll'] for f in glob.glob(os.path.join(lib_dir, ext))),
+        None)
+    if file_path is None:
+        raise FileNotFoundError('No file with extension .so, .pyd or .dll was found.')
+
+    # Copy the found file to the parent directory of the 'cpp' directory
+    shutil.copy(file_path, script_dir)
+
+    # Check if 'build' directory exists, remove it if it does
+    if os.path.exists(build_dir):
+        shutil.rmtree(build_dir)
+

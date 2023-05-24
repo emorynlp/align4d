@@ -6,15 +6,22 @@ the .pyd or .so file are the compiled objects in the build directory
 """
 from distutils.core import Extension, setup
 import os
+import platform
 
-# os.environ["CC"] = "g++-12"  # for mac os
-# os.environ["CXX"] = "g++-12"  # for mac os
+# Check the current platform and set the environment variables and compile arguments accordingly
+if platform.system() == "Darwin":  # macOS
+    os.environ["CC"] = "g++"
+    os.environ["CXX"] = "g++"
+    extra_compile_args = ["-std=c++20", "-O3"]  # change to -std=c++2a if -std=c++20 is not usable
+elif platform.system() == "Windows":  # Windows
+    extra_compile_args = ["/std:c++20", "/O2"]
+else:  # Linux
+    extra_compile_args = ["-std=c++20", "-O3"]  # change to -std=c++2a if -std=c++20 is not usable
 
 module1 = Extension(
     "align4d",
     sources=["align4d_cpython_extension.cpp", "align.cpp", "msa.cpp", "postprocess.cpp", "preprocess.cpp"],
-    extra_compile_args=["/std:c++20", "/O2"],  # for MSVC
-    # extra_compile_args=["-std=c++2a", "-O2"]  # for G++， change to -std=c++20 if you can
+    extra_compile_args=extra_compile_args
 )
 
 setup(
