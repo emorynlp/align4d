@@ -178,7 +178,7 @@ reference = [
         ["E", "How are you? "]
 ]
 align_result = align.align(hypothesis, reference)
-token_match_result = align.get_token_match_result(align_result)
+token_match_result = align.token_match(align_result)
 print(token_match_result)
 ```
 
@@ -205,7 +205,7 @@ reference = [
         ["E", "How are you? "]
 ]
 align_result = align.align(hypothesis, reference)
-align_indices = align.get_token_match_result(align_result)
+align_indices = align.align_indices(align_result)
 print(align_indices)
 ```
 
