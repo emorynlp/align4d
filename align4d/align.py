@@ -35,8 +35,8 @@ def align(hypothesis: str | list[str], reference: list[list], partial_bound: int
                 reference_label.extend([utterance[0]] * len(utterance[1]))
     if strip_punctuation:
         TRANS = str.maketrans('', '', string.punctuation)
-        hypothesis_strip = [s.translate(TRANS) for s in hypothesis_temp]
-        reference_strip = [s.translate(TRANS) for s in reference_temp]
+        hypothesis_strip = [s.translate(TRANS) if not all(c in string.punctuation for c in s) else s for s in hypothesis_temp]
+        reference_strip = [s.translate(TRANS) if not all(c in string.punctuation for c in s) else s for s in reference_temp]
     else:
         hypothesis_strip = hypothesis_temp
         reference_strip = reference_temp
@@ -80,22 +80,24 @@ def align(hypothesis: str | list[str], reference: list[list], partial_bound: int
     return output
 
 
-def token_match(output: dict, partial_bound: int = 2) -> list[str]:
+def token_match(output: dict, partial_bound: int = 2, strip_punctuation: bool = True) -> list[str]:
     align_result = [output["hypothesis"]]
     for value in output["reference"].values():
         align_result.append(value)
-    TRANS = str.maketrans('', '', string.punctuation)
-    align_result = [[token.translate(TRANS) for token in row] for row in align_result]
+    if strip_punctuation:
+        TRANS = str.maketrans('', '', string.punctuation)
+        align_result = [[token.translate(TRANS) if not all(c in string.punctuation for c in token) else token for token in row] for row in align_result]
     align_result = [[token if token != '' else '-' for token in row] for row in align_result]
     return align4d.get_token_match_result(align_result, partial_bound)
 
 
-def align_indices(output: dict) -> dict:
+def align_indices(output: dict, strip_punctuation: bool = True) -> dict:
     align_result = [output["hypothesis"]]
     for value in output["reference"].values():
         align_result.append(value)
-    TRANS = str.maketrans('', '', string.punctuation)
-    align_result = [[token.translate(TRANS) for token in row] for row in align_result]
+    if strip_punctuation:
+        TRANS = str.maketrans('', '', string.punctuation)
+        align_result = [[token.translate(TRANS) if not all(c in string.punctuation for c in token) else token for token in row] for row in align_result]
     align_result = [[token if token != '' else '-' for token in row] for row in align_result]
     align_indices_list = align4d.get_align_indices(align_result)
     align_indices = {}

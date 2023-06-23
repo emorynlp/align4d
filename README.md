@@ -166,7 +166,7 @@ The criterion for determining the matching result are the following (also mentio
 3. mismatch: Levenshtein Distance > boundary (default to be 2)
 4. gap: aligned to a gap
 
-The `token_match()` requires 2 parameter, the `align_result` which is the direct return value from the previous three alignment functions, and an optional parameter `partial_bound` which must be the same as the `partial_bound` used in `align()` function. 
+The `token_match()` requires 3 parameter, the `align_result` which is the direct return value from the previous three alignment functions, an optional parameter `partial_bound` which must be the same as the `partial_bound` used in `align()` function (default to be 2), and an optional parameter `strip_punctuation` which must be the same as the `strip_punctuation` used in `align()` function (default to be True). 
 
 ```python
 hypothesis = "ok I am a fish. Are you? Hello there. How are you? ok"
@@ -193,7 +193,7 @@ The return value is a list of strings that shows the token matching result and c
 
 Based on the alignment result, this tool provide function to retrieve the mapping from each token in the reference sequences to the hypothesis sequence. Each index shows the relative position (index) in the hypothesis sequence of the non-gap token (fully match, partially match, or mismatch) from the separated reference sequences. If the index is -1, it means that the current token does not aligned to any token in the hypothesis (align to a gap).
 
-To achieve this, use function `align_indices()`. This function requires one parameter, the `align_result` which is the direct return value from the previous `align()` function. 
+To achieve this, use function `align_indices()`. This function requires 2 parameters, the `align_result` which is the direct return value from the previous `align()` functionand an optional parameter `strip_punctuation` which must be the same as the `strip_punctuation` used in `align()` function (default to be True). 
 
 ```python
 hypothesis = "ok I am a fish. Are you? Hello there. How are you? ok"
